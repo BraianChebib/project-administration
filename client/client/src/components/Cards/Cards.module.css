@@ -1,0 +1,12 @@
+.cardsContainer{
+    display: flex;
+    flex-direction: column;
+    border-radius: 25px;
+    border: 2px solid black;
+    flex-wrap: wrap;
+}
+
+img{
+    width: 2rem;
+    height: 2rem;
+}
