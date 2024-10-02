@@ -2,9 +2,11 @@ import { useState } from "react";
 import style from "./Login.module.css";
 import { getUserProfile } from "../../redux/actions";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [login, setLogin] = useState({ nameUser: "", password: "" });
 
   const onChangeHandler = (event) => {
@@ -16,6 +18,7 @@ const Login = () => {
   const onSubmitHandler = (event) => {
     event.preventDefault();
     dispatch(getUserProfile(login));
+    navigate("/userProfile");
   };
 
   return (

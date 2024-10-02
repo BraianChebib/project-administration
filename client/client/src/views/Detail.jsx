@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 const Detail = () => {
   const { id } = useParams();
   const [user, setUser] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getDetailUser = async () => {
@@ -18,6 +19,10 @@ const Detail = () => {
   const deleteHandler = async () => {
     await axios.delete(`http://localhost:3001/users/deleteUser/${id}`);
     alert("usuario eliminado");
+  };
+
+  const onClickBackHandler = () => {
+    navigate("/home");
   };
 
   return (
@@ -43,12 +48,8 @@ const Detail = () => {
         </>
       )}
       <button onClick={deleteHandler}>Delete User</button>
-      <Link to={`/modifyUser/${id}`}>
-        <button>Modify User</button>
-      </Link>
-      <Link to="/home">
-        <button>Back</button>
-      </Link>
+
+      <button onClick={onClickBackHandler}>Back</button>
     </div>
   );
 };

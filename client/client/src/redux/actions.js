@@ -3,6 +3,7 @@ import axios from "axios";
 export const GET_USERS = "GET_USERES";
 export const GET_NAME_USER = "GET_NAME_USER";
 export const GET_USER_PROFILE = "GET_USER_PROFILE";
+export const LOG_OUT = "LOG_OUT";
 
 export const getUsers = () => {
   return async function (dispatch) {
@@ -32,11 +33,14 @@ export const getUserProfile = (login) => {
       const userProfile = user.data;
       dispatch({ type: GET_USER_PROFILE, payload: userProfile });
     } catch (error) {
-      console.error(
-        "Error al buscar el profile el usuario:",
-        error.response?.data || error.message
-      );
-      alert("Error al buscar el profile el usuario:");
+      console.error(error.response?.data || error.message);
+      alert("Error: Perfil no existente, por favor ingrese nuevamente");
     }
+  };
+};
+
+export const logOut = () => {
+  return async function (dispatch) {
+    dispatch({ type: LOG_OUT, payload: false });
   };
 };
