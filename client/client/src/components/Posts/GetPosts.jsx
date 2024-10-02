@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -7,6 +8,18 @@ const GetPosts = () => {
   const { userId } = useParams();
   const editCommentHandler = (postId) => {
     navigate(`/editPosts/${userId}/${postId}`);
+  };
+  const onClickNewPostHandler = () => {
+    navigate(`/createPost/${userId}`);
+  };
+  const onclickDeleteHandler = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3001/postUser/deletePost/${id}`);
+      alert("Posteo eliminado correctamente");
+      navigate("/userProfile");
+    } catch (error) {
+      alert(error);
+    }
   };
   return (
     <>
@@ -20,6 +33,9 @@ const GetPosts = () => {
                   <button onClick={() => editCommentHandler(us.id)}>
                     Edit Comment
                   </button>
+                  <button onClick={() => onclickDeleteHandler(us.id)}>
+                    Delete Post
+                  </button>
                 </li>
               </>
             );
@@ -27,6 +43,7 @@ const GetPosts = () => {
         ) : (
           <p>Cargando...</p>
         )}
+        <button onClick={onClickNewPostHandler}>crear un nuevo Post</button>
       </li>
     </>
   );

@@ -36,7 +36,7 @@ const modifyPostUserHandler = async (req, res) => {
 
 const deletePostUserHandler = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     const deletePost = await deletePostController(id);
     res.status(200).json(deletePost);
   } catch (error) {

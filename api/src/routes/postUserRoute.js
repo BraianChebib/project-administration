@@ -11,6 +11,6 @@ const postUserRoute = Router();
 postUserRoute.post("/", postUserHandler);
 postUserRoute.get("/", getPostsHandlers);
 postUserRoute.put("/modifyPost", modifyPostUserHandler);
-postUserRoute.delete("/deletePost", deletePostUserHandler);
+postUserRoute.delete("/deletePost/:id", deletePostUserHandler);
 
 module.exports = postUserRoute;

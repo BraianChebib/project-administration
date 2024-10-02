@@ -8,6 +8,7 @@ import Login from "./components/Login/Login";
 import UserProfile from "./components/userProfile/userProfile";
 import GetPosts from "./components/Posts/GetPosts";
 import EditPost from "./components/Posts/EditPost";
+import CreatePost from "./components/Posts/CreatePost";
 function App() {
   return (
     <>
@@ -17,8 +18,9 @@ function App() {
         <Route path="/form" element={<Form />} />
         <Route path="/login" element={<Login />} />
         <Route path="/userProfile" element={<UserProfile />} />
+        <Route path="/createPost/:userId" element={<CreatePost />} />
         <Route path="/editPosts/:userId/:postId" element={<EditPost />} />
-        <Route path="/posts/:id" element={<GetPosts />} />
+        <Route path="/posts/:userId" element={<GetPosts />} />
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/modifyUser/:id" element={<ModifyUser />} />
       </Routes>
