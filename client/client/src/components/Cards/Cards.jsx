@@ -23,7 +23,7 @@ const Cards = (props) => {
           {/* Mapea las publicaciones visibles y las muestra */}
           {visiblePosts.map((post) => (
             <div key={post.id}>
-              <p>{post.comment}</p>{" "}
+              <p>{post.comment}</p>
             </div>
           ))}
           {/* Si hay más de 3 publicaciones, muestra el botón para mostrar más o menos */}

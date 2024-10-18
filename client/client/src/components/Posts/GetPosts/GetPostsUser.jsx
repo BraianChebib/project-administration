@@ -90,14 +90,16 @@ const GetPostsUser = () => {
     const confirmDelete = window.confirm(
       "¿Estás seguro de que deseas eliminar este post?"
     );
-
     if (confirmDelete) {
       try {
-        await axios.delete(`http://localhost:3001/postUser/deletePost/${id}`); // Solicitud para eliminar el post
-        alert("Posteo eliminado correctamente"); // Notificación de eliminación exitosa
+        await axios.delete(`http://localhost:3001/postUser/deletePost/${id}`);
+        alert("Posteo eliminado correctamente");
 
         // Actualiza el estado local para eliminar el post eliminado
-        setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id)); // Filtra el post eliminado
+        setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id)); // Actualiza el estado local
+
+        // También actualiza el estado de user.Posts
+        dispatch(refreshProfileUser(userId)); // Refresca el perfil para actualizar los posts
       } catch (error) {
         alert("Error al eliminar el post: " + error.message);
       }
