@@ -1,0 +1,75 @@
+.cardsContainer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    height: 200px;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #f9f9f9;
+
+}
+
+img{
+    width: 2rem;
+    height: 2rem;
+}
+
+.cardLeft{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-height: 180px;
+}
+
+.cardRight{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-;
+}
+
+.cardRight Link{
+    margin-top: auto;
+}
+
+/* con estas propiedades hacemos salto de linea cuando el contenido supera el contenedor  */
+.cardPosts{
+    border: 1px solid black;
+    width: 90%;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow-wrap: break-word;
+    overflow: auto;
+    border-radius: 10px;
+}
+
+
+
+  .cardLeft {
+    flex: 1;
+  }
+
+  .cardRight {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  img {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+  }
+
+  .showMoreButton {
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  

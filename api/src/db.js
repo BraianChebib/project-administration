@@ -14,7 +14,7 @@ posts(sequelize);
 
 const { Users, Posts } = sequelize.models;
 
-Users.hasMany(Posts);
+Users.hasMany(Posts, { onDelete: "CASCADE" });
 Posts.belongsTo(Users);
 
 module.exports = { sequelize, ...sequelize.models };

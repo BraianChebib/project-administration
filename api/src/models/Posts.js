@@ -14,7 +14,7 @@ const posts = (sequelize) => {
         allowNull: false,
       },
     },
-    { timestamps: false }
+    { timestamps: true }
   );
 };
 

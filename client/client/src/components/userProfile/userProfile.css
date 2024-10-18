@@ -1,0 +1,53 @@
+.dateUserHead{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.dateUserLeft{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dateUserButton{
+    border: 2px solid black;
+    width: 100%;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow-wrap: break-word;
+   max-height: 400px;
+   overflow: auto;
+
+}
+
+.dateUserFoot{
+    display: flex;
+    justify-content: space-between;
+}
+
+button{
+    margin: 5px;
+}
+
+.dateUserButtonItems{
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 5px;
+    margin: 10px 0;
+    background-color: #f9f9f9;
+}
+
+.showMoreButton{
+    display: flex;
+    justify-content: center;
+}
+
+.showMoreButton button{
+    margin-bottom: 20px;
+}
+
+.logOut{
+    background-color: rgb(221, 70, 70) !important
+}

@@ -1,9 +1,19 @@
-import { GET_USERS, GET_NAME_USER, GET_USER_PROFILE, LOG_OUT } from "./actions";
+import {
+  GET_USERS,
+  GET_NAME_USER,
+  GET_USER_PROFILE,
+  LOG_OUT,
+  GET_PROFILE_USER,
+  SET_LOADING,
+} from "./actions";
 
 const initialState = {
   users: [],
-  isAuthenticated: false,
-  profileUser: null,
+  isAuthenticated:
+    localStorage.getItem("isAuthenticated") === "true" ? true : false,
+  profileUser: JSON.parse(localStorage.getItem("profileUser")) || null,
+  loading: false,
+  posts: [],
 };
 const rootReducer = (state = initialState, actions) => {
   switch (actions.type) {
@@ -15,6 +25,13 @@ const rootReducer = (state = initialState, actions) => {
       return { ...state, isAuthenticated: true, profileUser: actions.payload };
     case LOG_OUT:
       return { ...state, isAuthenticated: actions.payload };
+    case GET_PROFILE_USER:
+      return {
+        ...state,
+        profileUser: actions.payload,
+      };
+    case SET_LOADING:
+      return { ...state, loading: actions.payload };
     default:
       return { ...state };
   }

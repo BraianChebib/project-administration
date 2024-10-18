@@ -6,3 +6,12 @@
     border: 2px solid black;
     border-radius: 15px;
 }
+
+.buttonModifyUser{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.deleteUser{
+    background-color: rgb(221, 70, 70)  !important
+}

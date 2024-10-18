@@ -1,0 +1,73 @@
+#containerNavBar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    background-color: rgb(54, 141, 80);
+    width: 100vh;
+
+}
+
+.button{
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+}
+
+/* button  */
+@import 'https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300';
+
+
+
+.box-3 {background-color: #48c848;
+  border-color: rgb(57, 122, 58);
+  color: #fff; border-radius: 15px;}
+
+.btn {
+  height: 40px;
+  text-align: center;
+  width: 120px;
+  cursor: pointer;
+
+}
+
+.btn-three {
+  color: #FFF;
+  transition: all 0.5s;
+  position: relative;
+  text-align: center;
+
+}
+.btn-three::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: rgba(255,255,255,0.1);
+  transition: all 0.3s;
+}
+.btn-three:hover::before {
+  opacity: 0 ;
+  transform: scale(0.5,0.5);
+}
+.btn-three::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0;
+  transition: all 0.3s;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  transform: scale(1.2,1.2);
+  border-radius: 15px;
+
+
+
+}
+.btn-three:hover::after {
+  opacity: 1;
+  transform: scale(1,1);
+}

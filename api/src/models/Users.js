@@ -46,7 +46,7 @@ const users = (sequelize) => {
         defaultValue: false,
       },
     },
-    { timestamps: false }
+    { timestamps: true }
   );
 };
 

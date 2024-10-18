@@ -1,0 +1,32 @@
+.postsUser{
+    display: flex;
+    flex-direction: column;
+    width:100%;
+    border: 2px solid black;
+    border-radius: 10px;
+    max-height: 450px;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow-wrap: break-word;
+    overflow: auto;
+}
+
+.headContainer{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.dateUser{
+    margin-left: 20px;
+}
+
+p{
+    font-size: 18px !important;
+}
+
+.postUserItem{
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 5px;
+}

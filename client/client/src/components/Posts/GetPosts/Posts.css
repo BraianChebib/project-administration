@@ -1,0 +1,36 @@
+.allPotsUser{
+ max-height: 450px;
+ overflow-y: auto;
+border: 1px solid black ;
+border-radius: 10px;
+}
+
+.itemPostUser{
+    border: 1px solid black;
+    width: 100%;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow-wrap: break-word;
+    height: 100%;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #f9f9f9;
+}
+
+.itemPostUserButton{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.deletePost{
+    background-color: rgb(221, 70, 70) !important;
+}
+
+.dataUserPost{
+    display: flex;
+    justify-content: space-between;
+}
