@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import style from "./Form.module.css";
 import axios from "axios";
-import { GoogleLogin } from "react-google-login";
+import { GoogleLogin } from "@react-oauth/google";
 import { gapi } from "gapi-script";
 import { useNavigate } from "react-router-dom";
 import { getUserProfile } from "../../redux/actions";
 import { useDispatch } from "react-redux";
-const API_URL_APP = process.env.API_URL || "http://localhost:3001";
+const API_URL_APP = process.env.REACT_APP_API_URL || "http://localhost:3001";
 const Form = () => {
   const navigate = useNavigate(); // Inicializa useNavigate para redirigir a otras rutas
   const dispatch = useDispatch(); // Hook para obtener el dispatch de Redux
@@ -222,7 +222,6 @@ const Form = () => {
       <div className={style.oauthContainer}>
         <p>O inicia sesión con Google:</p>
         <GoogleLogin
-          clientId="133661170359-fkebjnpt8sudfqujbcjbjrtj1cc8veoc.apps.googleusercontent.com" // ID del cliente de Google
           buttonText="Login with Google" // Texto del botón
           onSuccess={onSuccessGoogle} // Maneja la respuesta exitosa del inicio de sesión
           cookiePolicy={"single_host_origin"} // Política de cookies

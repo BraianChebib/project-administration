@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { refreshProfileUser } from "../../redux/actions";
 import axios from "axios";
 import "./userProfile.css";
-const API_URL_APP = process.env.API_URL || "http://localhost:3001";
+const API_URL_APP = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
 const UserProfile = () => {
   const profile = useSelector((state) => state.profileUser); // Obtiene el perfil del usuario del estado global

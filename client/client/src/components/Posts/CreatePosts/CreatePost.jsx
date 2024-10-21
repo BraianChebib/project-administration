@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./CreatePosts.css";
-const API_URL_APP = process.env.API_URL || "http://localhost:3001";
+const API_URL_APP = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
 const CreatePost = () => {
   const { userId } = useParams(); // Obtiene el userId de los parámetros de la URL

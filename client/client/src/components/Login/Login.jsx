@@ -3,10 +3,10 @@ import "./Login.css";
 import { getUserProfile } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from "react-google-login";
+import { GoogleLogin } from "@react-oauth/google";
 import { gapi } from "gapi-script";
 import axios from "axios";
-const API_URL_APP = process.env.API_URL || "http://localhost:3001";
+const API_URL_APP = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
 const Login = () => {
   const dispatch = useDispatch(); // Inicializa el dispatch para acciones de Redux
@@ -304,7 +304,6 @@ const Login = () => {
               <button type="submit">Enviar</button>
               <p>Or sign in with Google:</p>
               <GoogleLogin
-                clientId="133661170359-fkebjnpt8sudfqujbcjbjrtj1cc8veoc.apps.googleusercontent.com" // ID de cliente de Google
                 buttonText="Login with Google"
                 onSuccess={onSuccessGoogleForm} // Callback para el éxito
                 cookiePolicy={"single_host_origin"} // Política de cookies
@@ -333,7 +332,6 @@ const Login = () => {
             <button type="submit">Login</button>
             <p>Or sign in with Google:</p>
             <GoogleLogin
-              clientId="133661170359-fkebjnpt8sudfqujbcjbjrtj1cc8veoc.apps.googleusercontent.com" // ID de cliente de Google
               buttonText="Login with Google"
               onSuccess={onSuccessGoogle} // Callback para el éxito
               cookiePolicy={"single_host_origin"} // Política de cookies

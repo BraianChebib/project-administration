@@ -6,7 +6,7 @@ export const GET_USER_PROFILE = "GET_USER_PROFILE";
 export const LOG_OUT = "LOG_OUT";
 export const GET_PROFILE_USER = "GET_PROFILE_USER";
 export const SET_LOADING = "SET_LOADING";
-const API_URL_APP = process.env.API_URL || "http://localhost:3001";
+const API_URL_APP = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
 export const getUsers = () => {
   return async function (dispatch) {

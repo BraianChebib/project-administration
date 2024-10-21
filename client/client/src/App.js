@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import { GoogleOAuthProvider } from "@react-oauth/google"; // Importa el proveedor
 import {
   Home,
   Form,
@@ -12,9 +13,14 @@ import {
   NavBar,
 } from "./views/index";
 
+// Usa tu clientId de Google OAuth
+const clientId =
+  "133661170359-fkebjnpt8sudfqujbcjbjrtj1cc8veoc.apps.googleusercontent.com";
+
 function App() {
   return (
-    <>
+    // Envuelve tu aplicación dentro del GoogleOAuthProvider
+    <GoogleOAuthProvider clientId={clientId}>
       <NavBar />
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
@@ -28,7 +34,7 @@ function App() {
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/modifyUser/:id" element={<ModifyUser />} />
       </Routes>
-    </>
+    </GoogleOAuthProvider>
   );
 }
 

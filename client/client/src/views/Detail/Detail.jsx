@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getUsers } from "../../redux/actions";
 import { useDispatch } from "react-redux";
 import "./Detail.css";
-const API_URL_APP = process.env.API_URL || "http://localhost:3001";
+const API_URL_APP = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
 const Detail = () => {
   const { id } = useParams(); // Obtiene el ID del usuario desde los parámetros de la URL

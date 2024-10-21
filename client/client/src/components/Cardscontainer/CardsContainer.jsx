@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import "./CardsContainer.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-const API_URL_APP = process.env.API_URL || "http://localhost:3001";
+const API_URL_APP = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
 const CardsContainers = () => {
   const users = useSelector((state) => state.users); // Obtiene la lista de usuarios desde el estado de Redux

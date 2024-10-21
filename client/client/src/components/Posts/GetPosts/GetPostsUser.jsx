@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { refreshProfileUser } from "../../../redux/actions";
 import { useEffect, useState } from "react";
 import "./Posts.css";
-const API_URL_APP = process.env.API_URL || "http://localhost:3001";
+const API_URL_APP = process.env.REACT_APP_API_URL || "http://localhost:3001";
 const GetPostsUser = () => {
   const { userId } = useParams(); // Obtiene el userId de los parámetros de la URL
   const navigate = useNavigate(); // Hook para la navegación
