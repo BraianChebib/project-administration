@@ -91,7 +91,7 @@ const Login = () => {
         Math.floor(Math.random() * characters.length) // Selecciona un carácter aleatorio
       );
     }
-    return result; // Retorna la cadena generada
+    return result; // Retorna la cadena generad
   };
 
   // Manejar envío del formulario de registro
