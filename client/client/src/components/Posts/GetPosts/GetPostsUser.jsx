@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { refreshProfileUser } from "../../../redux/actions";
 import { useEffect, useState } from "react";
 import "./Posts.css";
-
+const API_URL_APP = process.env.API_URL || "http://localhost:3001";
 const GetPostsUser = () => {
   const { userId } = useParams(); // Obtiene el userId de los parámetros de la URL
   const navigate = useNavigate(); // Hook para la navegación
@@ -15,7 +15,7 @@ const GetPostsUser = () => {
 
   // Función para obtener todos los posts de usuarios
   const allPostsAdmin = async () => {
-    const allPosts = await axios.get("http://localhost:3001/postUser"); // Solicitud para obtener todos los posts
+    const allPosts = await axios.get(`${API_URL_APP}/postUser`); // Solicitud para obtener todos los posts
     setPosts(allPosts.data); // Actualiza el estado con los posts obtenidos
   };
 
@@ -32,7 +32,7 @@ const GetPostsUser = () => {
   const getUserData = async (postId) => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/postUser/relationUser/${postId}` // Solicitud para obtener el usuario relacionado con el post
+        `${API_URL_APP}/postUser/relationUser/${postId}` // Solicitud para obtener el usuario relacionado con el post
       );
       return response.data.User; // Devuelve los datos del usuario
     } catch (error) {
@@ -92,7 +92,7 @@ const GetPostsUser = () => {
     );
     if (confirmDelete) {
       try {
-        await axios.delete(`http://localhost:3001/postUser/deletePost/${id}`);
+        await axios.delete(`${API_URL_APP}/postUser/deletePost/${id}`);
         alert("Posteo eliminado correctamente");
 
         // Actualiza el estado local para eliminar el post eliminado

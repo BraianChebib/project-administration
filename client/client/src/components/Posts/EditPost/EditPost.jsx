@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./EditPost.css";
+const API_URL_APP = process.env.API_URL || "http://localhost:3001";
 
 const EditPost = () => {
   const { userId, postId } = useParams(); // Obtiene el userId y postId de los parámetros de la URL
@@ -13,7 +14,7 @@ const EditPost = () => {
     const getPost = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3001/postUser/${postId}` // Solicitud para obtener el post por su ID
+          `${API_URL_APP}/postUser/${postId}` // Solicitud para obtener el post por su ID
         );
         setInput({ id: postId, comment: response.data.comment }); // Actualiza el estado con el comentario actual
       } catch (error) {
@@ -32,7 +33,7 @@ const EditPost = () => {
   // Maneja el envío del formulario
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    await axios.put(`http://localhost:3001/postUser/modifyPost`, input); // Envía el comentario modificado al servidor
+    await axios.put(`${API_URL_APP}/postUser/modifyPost`, input); // Envía el comentario modificado al servidor
     navigate(`/posts/${userId}`); // Redirige a la página de posts del usuario
   };
 

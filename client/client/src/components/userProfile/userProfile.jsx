@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { refreshProfileUser } from "../../redux/actions";
 import axios from "axios";
 import "./userProfile.css";
+const API_URL_APP = process.env.API_URL || "http://localhost:3001";
 
 const UserProfile = () => {
   const profile = useSelector((state) => state.profileUser); // Obtiene el perfil del usuario del estado global
@@ -25,7 +26,7 @@ const UserProfile = () => {
       if (profile.admin) {
         setIsAdmin(true); // Marca al usuario como admin
         // Obtener todos los posts si es admin
-        axios.get("http://localhost:3001/postUser").then((response) => {
+        axios.get(`${API_URL_APP}/postUser`).then((response) => {
           setPosts(response.data); // Guarda todos los posts en el estado
         });
       } else {

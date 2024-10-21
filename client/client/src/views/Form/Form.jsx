@@ -6,6 +6,7 @@ import { gapi } from "gapi-script";
 import { useNavigate } from "react-router-dom";
 import { getUserProfile } from "../../redux/actions";
 import { useDispatch } from "react-redux";
+const API_URL_APP = process.env.API_URL || "http://localhost:3001";
 const Form = () => {
   const navigate = useNavigate(); // Inicializa useNavigate para redirigir a otras rutas
   const dispatch = useDispatch(); // Hook para obtener el dispatch de Redux
@@ -95,7 +96,7 @@ const Form = () => {
       // Verifica que no haya errores de correo
       try {
         axios
-          .post("http://localhost:3001/users/createUser", form) // Envía los datos del formulario al servidor
+          .post(`${API_URL_APP}/users/createUser`, form) // Envía los datos del formulario al servidor
           .then((res) => alert("Usuario creado"))
           .catch((err) => {
             const errorMessage =
@@ -138,7 +139,7 @@ const Form = () => {
 
     // Envía los datos al servidor
     try {
-      const res = await axios.post("http://localhost:3001/users/createUser", {
+      const res = await axios.post(`${API_URL_APP}/users/createUser`, {
         name: userInfo.givenName,
         lastName: userInfo.familyName,
         email: userInfo.email,

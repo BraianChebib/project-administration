@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import "./CardsContainer.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+const API_URL_APP = process.env.API_URL || "http://localhost:3001";
 
 const CardsContainers = () => {
   const users = useSelector((state) => state.users); // Obtiene la lista de usuarios desde el estado de Redux
@@ -14,7 +15,7 @@ const CardsContainers = () => {
         // Solo hacer la solicitud si el usuario tiene una id válida y existe en la lista
         const userPromises = users
           .filter((user) => user.id) // Filtra los usuarios para asegurarse de que tengan id
-          .map((user) => axios.get(`http://localhost:3001/users/${user.id}`)); // Crea una lista de promesas para obtener detalles del usuario
+          .map((user) => axios.get(`${API_URL_APP}/users/${user.id}`)); // Crea una lista de promesas para obtener detalles del usuario
 
         const responses = await Promise.all(userPromises); // Espera a que se resuelvan todas las promesas
         const userDetailsMap = responses.reduce((acc, res, idx) => {

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import "./ModifyUser.css";
 import { refreshProfileUser } from "../../redux/actions";
 import { useDispatch } from "react-redux";
+const API_URL_APP = process.env.API_URL || "http://localhost:3001";
 
 const Detail = () => {
   const { id } = useParams(); // Obtiene el id del usuario desde los parámetros de la URL
@@ -14,7 +15,7 @@ const Detail = () => {
   // useEffect para obtener los detalles del usuario al cargar el componente
   useEffect(() => {
     const getDetailUser = async () => {
-      const detailUser = await axios.get(`http://localhost:3001/users/${id}`); // Realiza la solicitud para obtener los detalles del usuario
+      const detailUser = await axios.get(`${API_URL_APP}/users/${id}`); // Realiza la solicitud para obtener los detalles del usuario
       setUser(detailUser.data); // Actualiza el estado con los datos del usuario
     };
     getDetailUser(); // Llama a la función para obtener detalles del usuario
@@ -26,7 +27,7 @@ const Detail = () => {
       "¿estas seguro que quieres eliminar tu cuenta de usuario?"
     );
     if (deleteUser) {
-      await axios.delete(`http://localhost:3001/users/deleteUser/${id}`); // Realiza la solicitud para eliminar al usuario
+      await axios.delete(`${API_URL_APP}/users/deleteUser/${id}`); // Realiza la solicitud para eliminar al usuario
       alert("usuario eliminado"); // Muestra alerta de confirmación
       navigate("/login"); // Redirige al inicio de sesión
     }
@@ -48,7 +49,7 @@ const Detail = () => {
   const submitHandler = (event) => {
     event.preventDefault(); // Previene el comportamiento por defecto del formulario
     try {
-      axios.put(`http://localhost:3001/users//modifyUser/${id}`, user); // Realiza la solicitud para modificar al usuario
+      axios.put(`${API_URL_APP}/users//modifyUser/${id}`, user); // Realiza la solicitud para modificar al usuario
       alert("Usuario Modificado correctamente"); // Muestra alerta de confirmación
       dispatch(refreshProfileUser(id)); // Actualiza el perfil del usuario en Redux
       navigate("/userProfile"); // Redirige al perfil de usuario

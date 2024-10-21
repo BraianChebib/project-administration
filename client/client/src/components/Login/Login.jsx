@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
 import axios from "axios";
+const API_URL_APP = process.env.API_URL || "http://localhost:3001";
 
 const Login = () => {
   const dispatch = useDispatch(); // Inicializa el dispatch para acciones de Redux
@@ -99,7 +100,7 @@ const Login = () => {
     if (!errors.email) {
       try {
         axios
-          .post("http://localhost:3001/users/createUser", form) // Envía los datos al servidor
+          .post(`${API_URL_APP}/users/createUser`, form) // Envía los datos al servidor
           .then((res) => alert("Usuario creado")) // Muestra alerta si el usuario fue creado
           .catch((err) => {
             const errorMessage =
@@ -141,7 +142,7 @@ const Login = () => {
 
     // Enviar los datos al servidor
     try {
-      const res = await axios.post("http://localhost:3001/users/createUser", {
+      const res = await axios.post(`${API_URL_APP}/users/createUser`, {
         name: userInfo.givenName,
         lastName: userInfo.familyName,
         email: userInfo.email,

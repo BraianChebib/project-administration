@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./CreatePosts.css";
+const API_URL_APP = process.env.API_URL || "http://localhost:3001";
 
 const CreatePost = () => {
   const { userId } = useParams(); // Obtiene el userId de los parámetros de la URL
@@ -17,7 +18,7 @@ const CreatePost = () => {
   // Maneja el envío del formulario
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:3001/postUser/", input); // Envía el nuevo post al servidor
+    await axios.post(`${API_URL_APP}/postUser/`, input); // Envía el nuevo post al servidor
     navigate(`/posts/${userId}`); // Redirige a la página de posts del usuario
   };
 

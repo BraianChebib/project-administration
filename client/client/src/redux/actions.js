@@ -6,10 +6,11 @@ export const GET_USER_PROFILE = "GET_USER_PROFILE";
 export const LOG_OUT = "LOG_OUT";
 export const GET_PROFILE_USER = "GET_PROFILE_USER";
 export const SET_LOADING = "SET_LOADING";
+const API_URL_APP = process.env.API_URL || "http://localhost:3001";
 
 export const getUsers = () => {
   return async function (dispatch) {
-    const users = await axios.get("http://localhost:3001/users");
+    const users = await axios.get(`${API_URL_APP}/users`);
     const AllUsers = users.data;
     dispatch({ type: GET_USERS, payload: AllUsers });
   };
@@ -20,9 +21,7 @@ export const getNameUser = (name) => {
     dispatch({ type: SET_LOADING, payload: true });
 
     try {
-      const nameUser = await axios.get(
-        `http://localhost:3001/users?name=${name}`
-      );
+      const nameUser = await axios.get(`${API_URL_APP}/users?name=${name}`);
       const nameUse = nameUser.data;
 
       if (nameUse.length > 0) {
@@ -41,7 +40,7 @@ export const getNameUser = (name) => {
 
 export const refreshProfileUser = (userId) => async (dispatch) => {
   try {
-    const response = await axios.get(`http://localhost:3001/users/${userId}`);
+    const response = await axios.get(`${API_URL_APP}/users/${userId}`);
     dispatch({
       type: GET_PROFILE_USER,
       payload: response.data,
@@ -54,10 +53,7 @@ export const refreshProfileUser = (userId) => async (dispatch) => {
 export const getUserProfile = (login) => {
   return async function (dispatch) {
     try {
-      const user = await axios.post(
-        "http://localhost:3001/users/userProfile",
-        login
-      );
+      const user = await axios.post(`${API_URL_APP}/users/userProfile`, login);
       const userProfile = user.data;
 
       localStorage.setItem("profileUser", JSON.stringify(userProfile));

@@ -1,9 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { refreshProfileUser, getUsers } from "../../redux/actions";
+import { getUsers } from "../../redux/actions";
 import { useDispatch } from "react-redux";
 import "./Detail.css";
+const API_URL_APP = process.env.API_URL || "http://localhost:3001";
 
 const Detail = () => {
   const { id } = useParams(); // Obtiene el ID del usuario desde los parámetros de la URL
@@ -14,7 +15,7 @@ const Detail = () => {
   // Efecto para obtener los detalles del usuario al montar el componente
   useEffect(() => {
     const getDetailUser = async () => {
-      const detailUser = await axios.get(`http://localhost:3001/users/${id}`); // Función para obtener los detalles del usuario
+      const detailUser = await axios.get(`${API_URL_APP}/users/${id}`); // Función para obtener los detalles del usuario
       setUser(detailUser.data); // Actualiza el estado con los datos del usuario
     };
     getDetailUser(); // Llama a la función para obtener los datos
@@ -27,7 +28,7 @@ const Detail = () => {
     );
     if (deleteUser) {
       try {
-        await axios.delete(`http://localhost:3001/users/deleteUser/${id}`); // Solicitud para eliminar el usuario
+        await axios.delete(`${API_URL_APP}/users/deleteUser/${id}`); // Solicitud para eliminar el usuario
         alert("Usuario eliminado"); // Mensaje de éxito
 
         // Actualizamos la lista de usuarios en Redux
@@ -50,7 +51,7 @@ const Detail = () => {
     if (confirmDelete) {
       try {
         await axios.delete(
-          `http://localhost:3001/postUser/deletePost/${postId}` // Solicitud para eliminar el post
+          `${API_URL_APP}/postUser/deletePost/${postId}` // Solicitud para eliminar el post
         );
         alert("Post eliminado correctamente"); // Mensaje de éxito
 
