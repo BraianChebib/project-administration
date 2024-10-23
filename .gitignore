@@ -19,7 +19,8 @@
 .env.production.local
 /api/.env
 /client/client/.env
-/node_modules/
+/client/client/node_modules
+/api/node_modules
 
 
 
