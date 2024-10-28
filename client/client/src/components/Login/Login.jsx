@@ -3,15 +3,28 @@ import "./Login.css";
 import { getUserProfile } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
 import { gapi } from "gapi-script";
+import GoogleLogin from "react-google-login";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 import axios from "axios";
 const API_URL_APP = process.env.REACT_APP_API_URL || "http://localhost:3001";
+const clientID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+const CLOUDINARY = process.env.URL_CLOUDINARY;
 
 const Login = () => {
   const dispatch = useDispatch(); // Inicializa el dispatch para acciones de Redux
   const navigate = useNavigate(); // Inicializa el hook de navegación
   const [login, setLogin] = useState({ nameUser: "", password: "" }); // Estado para manejar el inicio de sesión
+  const [googleLogin, setGoogleLogin] = useState({
+    name: "",
+    lastName: "",
+    image: "",
+    email: "",
+    phone: "",
+    nameUser: "",
+    password: "",
+  });
   const autenticacion = useSelector((state) => state.isAuthenticated); // Obtiene el estado de autenticación desde Redux
 
   const [form, setForm] = useState({
@@ -27,22 +40,23 @@ const Login = () => {
   const [errors, setErrors] = useState({
     email: "", // Estado para manejar errores de validación
   });
+  const [showPassword, setShowPassword] = useState(false); // Estado para mostrar/ocultar password
+
+  useEffect(() => {
+    const start = () => {
+      gapi.auth2.init({ clientId: clientID });
+    };
+    gapi.load("client:auth2", start);
+  }, []);
 
   // Redirige al perfil de usuario si está autenticado
   useEffect(() => {
     if (autenticacion) navigate("/userProfile");
   });
 
-  // Inicializar gapi autenticación con Google
-  useEffect(() => {
-    const initClient = () => {
-      gapi.client.init({
-        clientId:
-          "133661170359-fkebjnpt8sudfqujbcjbjrtj1cc8veoc.apps.googleusercontent.com", // ID de cliente de Google
-      });
-    };
-    gapi.load("client:auth2", initClient); // Carga la API de Google
-  }, []);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword); // Alterna el estado de visibilidad del password
+  };
 
   // Validación de correo electrónico
   const validate = (form) => {
@@ -70,10 +84,7 @@ const Login = () => {
     formData.append("upload_preset", "ucyfuf2e"); // Configuración de Cloudinary
 
     try {
-      const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/dekk238ao/image/upload",
-        formData
-      );
+      const response = await axios.post(CLOUDINARY, formData);
       setForm({ ...form, image: response.data.secure_url }); // Actualiza el estado con la URL de la imagen
     } catch (error) {
       console.error("Error al subir la imagen:", error);
@@ -94,88 +105,42 @@ const Login = () => {
     return result; // Retorna la cadena generad
   };
 
-  // Manejar envío del formulario de registro
-  const submitHandler = (event) => {
-    event.preventDefault(); // Previene el comportamiento por defecto del formulario
+  // Genera un Phone aleatorio
+  const generateRandomPhoneNumber = () => {
+    const areaCode = Math.floor(Math.random() * 900) + 100; // Código de área entre 100 y 999
+    const centralOfficeCode = Math.floor(Math.random() * 900) + 100; // Parte central entre 100 y 999
+    const lineNumber = Math.floor(Math.random() * 9000) + 1000; // Número de línea entre 1000 y 9999
+    return `(${areaCode}) ${centralOfficeCode}-${lineNumber}`; // Formato (XXX) XXX-XXXX
+  };
+
+  const onSubmitHandlerForm = async (event) => {
+    event.preventDefault();
+
     if (!errors.email) {
       try {
-        axios
-          .post(`${API_URL_APP}/users/createUser`, form) // Envía los datos al servidor
-          .then((res) => alert("Usuario creado")) // Muestra alerta si el usuario fue creado
-          .catch((err) => {
-            const errorMessage =
-              err.response?.data?.error || "Error en la creación del usuario";
-            alert(errorMessage); // Muestra mensaje de error en caso de que ocurra algo mal
-          });
+        // Crear el usuario
+        const response = await axios.post(
+          `${API_URL_APP}/users/createUser`,
+          form
+        );
+        alert("Usuario creado");
+
+        // Autenticación solo si la creación es exitosa
+        if (response.data) {
+          const authenticated = await dispatch(
+            getUserProfile({ email: form.email, password: form.password })
+          );
+          if (authenticated) {
+            navigate("/userProfile"); // Redirige al perfil de usuario
+          }
+        }
       } catch (error) {
-        alert(
-          "Error al crear el usuario:",
-          error.response?.data || error.message
-        ); // Muestra alerta en caso de error
+        const errorMessage =
+          error.response?.data?.error || "Error en la creación del usuario";
+        alert(errorMessage);
       }
     }
   };
-
-  // Manejo del inicio de sesión con Google
-  const onSuccessGoogleForm = async (response) => {
-    const userInfo = response.profileObj; // Información del perfil de Google
-
-    // Generar valores aleatorios
-    const randomPhone = `+1${
-      Math.floor(Math.random() * 9000000000) + 1000000000
-    }`; // Generar número de teléfono aleatorio
-    const randomNameUser = `${userInfo.givenName}${
-      userInfo.familyName
-    }${Math.floor(Math.random() * 1000)}`; // Generar nombre de usuario aleatorio
-    const randomPassword = generateRandomString(12); // Generar contraseña aleatoria de 12 caracteres
-
-    setForm({
-      ...form,
-      name: userInfo.givenName,
-      lastName: userInfo.familyName,
-      email: userInfo.email,
-      image: userInfo.imageUrl,
-      phone: randomPhone,
-      nameUser: randomNameUser,
-      password: randomPassword,
-    });
-
-    // Enviar los datos al servidor
-    try {
-      const res = await axios.post(`${API_URL_APP}/users/createUser`, {
-        name: userInfo.givenName,
-        lastName: userInfo.familyName,
-        email: userInfo.email,
-        image: userInfo.imageUrl,
-        phone: randomPhone,
-        nameUser: randomNameUser,
-        password: randomPassword,
-      });
-
-      // Redirigir al perfil del usuario
-      alert("Usuario creado con Google: " + res.data.message);
-      const authenticated = await dispatch(
-        getUserProfile({ nameUser: randomNameUser, password: randomPassword }) // Autenticación en Redux
-      );
-      if (authenticated) {
-        navigate("/userProfile"); // Redirige al perfil de usuario
-      }
-    } catch (error) {
-      alert("Usuario ya existente, por favor modifique los datos");
-    }
-  };
-
-  // Inicializar gapi autenticación con Google
-  useEffect(() => {
-    const initClient = () => {
-      gapi.client.init({
-        clientId:
-          "133661170359-fkebjnpt8sudfqujbcjbjrtj1cc8veoc.apps.googleusercontent.com", // ID de cliente de Google
-        scope: "email", // Alcance de la autenticación
-      });
-    };
-    gapi.load("client:auth2", initClient); // Carga la API de Google
-  }, []);
 
   useEffect(() => {
     const container = document.getElementById("container");
@@ -222,7 +187,52 @@ const Login = () => {
     }
   };
 
-  // Manejo del inicio de sesión con Google
+  const onSuccess = async (response) => {
+    const { profileObj } = response;
+    const newLoginData = {
+      ...googleLogin,
+      name: profileObj.givenName || "", // Asigna el nombre
+      lastName: profileObj.familyName || "", // Asigna el apellido
+      email: profileObj.email || "", // Asigna el email
+      image: profileObj.imageUrl || "", // Asigna la imagen
+      nameUser: profileObj.email.split("@")[0], // Nombre de usuario a partir del email
+      password: generateRandomString(12), // Genera una contraseña aleatoria
+      phone: generateRandomPhoneNumber(), // Genera un número de teléfono aleatorio
+    };
+
+    setGoogleLogin(newLoginData);
+
+    try {
+      // Crear usuario
+      const createUserResponse = await axios.post(
+        `${API_URL_APP}/users/createUser`,
+        newLoginData
+      );
+      alert("Usuario creado");
+
+      // Actualizar perfil en Redux
+      dispatch(getUserProfile(createUserResponse.data));
+
+      // Intentar autenticación
+      const authenticated = await dispatch(
+        getUserProfile({ email: profileObj.email }) // Autenticación en Redux usando email
+      );
+      if (authenticated) {
+        navigate("/userProfile"); // Redirige al perfil de usuario
+      } else {
+        alert("Error en el inicio de sesión");
+      }
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.error || "Error en la creación del usuario";
+      alert(errorMessage); // Muestra mensaje de error si ocurre
+    }
+  };
+
+  const onFailure = (response) => {
+    console.log("Error");
+  };
+
   const onSuccessGoogle = async (response) => {
     const userInfo = response.profileObj; // Información del perfil de Google
 
@@ -245,7 +255,7 @@ const Login = () => {
     <div>
       <div class="container" id="container">
         <div class="form-container sign-up">
-          <form onSubmit={submitHandler}>
+          <form onSubmit={onSubmitHandlerForm}>
             <div>
               <h3>Create Acount</h3>
               <input
@@ -294,22 +304,33 @@ const Login = () => {
                 name="nameUser"
                 placeholder="Name User"
               />
-              <input
-                type="password"
-                value={form.password}
-                onChange={onChangeHandlerForm}
-                name="password"
-                placeholder="Password"
-              />
+              <div className="hiddenPassword">
+                <input
+                  type={showPassword ? "text" : "password"} // Alterna entre "text" y "password"
+                  value={form.password}
+                  onChange={onChangeHandlerForm}
+                  name="password"
+                  placeholder="Password"
+                />
+                <span
+                  onClick={togglePasswordVisibility}
+                  style={{ cursor: "pointer", marginLeft: "8px" }}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}{" "}
+                  {/* Muestra el icono según el estado */}
+                </span>
+              </div>
               <button type="submit">Enviar</button>
-              <p>Or sign in with Google:</p>
-              <GoogleLogin
-                buttonText="Login with Google"
-                onSuccess={onSuccessGoogleForm} // Callback para el éxito
-                cookiePolicy={"single_host_origin"} // Política de cookies
-              />
             </div>
           </form>
+          <div className="formGoogle">
+            <GoogleLogin
+              clientId={clientID}
+              onSuccess={onSuccess}
+              onFailure={onFailure}
+              cookiePolicy={"single_host_policy"}
+            />
+          </div>
         </div>
         <div class="form-container sign-in">
           {/* Formulario de inicio de sesión */}
@@ -322,19 +343,28 @@ const Login = () => {
               onChange={onChangeHandler}
               placeholder="Name User"
             />
-            <input
-              type="password"
-              value={login.password}
-              name="password"
-              onChange={onChangeHandler}
-              placeholder="Password"
-            />
+            <div className="hiddenPassword">
+              <input
+                type={showPassword ? "text" : "password"} // Alterna entre "text" y "password"
+                value={login.password}
+                name="password"
+                onChange={onChangeHandler}
+                placeholder="Password"
+              />
+              <span
+                onClick={togglePasswordVisibility}
+                style={{ cursor: "pointer", marginLeft: "8px" }}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}{" "}
+                {/* Muestra el icono según el estado */}
+              </span>
+            </div>
             <button type="submit">Login</button>
-            <p>Or sign in with Google:</p>
             <GoogleLogin
-              buttonText="Login with Google"
-              onSuccess={onSuccessGoogle} // Callback para el éxito
-              cookiePolicy={"single_host_origin"} // Política de cookies
+              clientId={clientID}
+              onSuccess={onSuccessGoogle}
+              onFailure={onFailure}
+              cookiePolicy={"single_host_policy"}
             />
           </form>
         </div>

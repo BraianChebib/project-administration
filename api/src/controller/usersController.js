@@ -67,22 +67,24 @@ const createUserController = async (
   // Verificar si el usuario ya existe en la base de datos
   const existingUser = await Users.findOne({
     where: {
-      [Op.or]: [
-        { email: email }, // Verificar por email
-      ],
+      [Op.or]: [{ email: email }],
     },
   });
 
-  // Si el usuario ya existe, devolver un mensaje
   if (existingUser) {
     throw new Error("El usuario con este email ya existe");
   }
 
-  // Si el usuario no existe, se crea
+  // Asignar imagen predeterminada si no se proporciona una
+  const defaultImage =
+    "https://definicion.de/wp-content/uploads/2019/07/perfil-de-usuario.png";
+  const userImage = image || defaultImage;
+
+  // Crear el usuario en la base de datos
   await Users.create({
     name,
     lastName,
-    image,
+    image: userImage,
     email,
     phone,
     nameUser,
@@ -171,6 +173,20 @@ const userProfileControllerByEmail = async (email) => {
   return user; // Asegúrate de que devuelvas el usuario completo o los campos necesarios
 };
 
+const googleAuthController = async (name, email, picture) => {
+  const user = Users.findOne({ email });
+  if (!user) {
+    // Si el usuario no existe, créalo
+    user = await Users.create({
+      name,
+      email,
+      image: picture,
+      password: Math.random().toString(36).slice(-8), // Contraseña aleatoria
+    });
+  }
+  return user;
+};
+
 module.exports = {
   getUserController,
   getUserByIdController,
@@ -179,4 +195,5 @@ module.exports = {
   createUserController,
   userProfileController,
   userProfileControllerByEmail,
+  googleAuthController,
 };

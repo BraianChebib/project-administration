@@ -176,7 +176,7 @@ const GetPostsUser = () => {
             </div>
           ))
         ) : (
-          <p>Cargando...</p>
+          <p>No hay Post...</p>
         )}
       </div>
       <div className="itemPostUserButton">

@@ -211,3 +211,17 @@ body{
     transform: translateX(200%);
 }
 
+.formGoogle{
+    display: flex;
+    justify-content: center;
+    margin-top: -90px;
+}
+
+.hiddenPassword{
+    display: flex;
+    width: 100%;
+}
+
+.hiddenPassword span{
+    margin-top: 20px;
+}

@@ -1,5 +1,4 @@
 import Home from "./Home/Home";
-import Form from "./Form/Form";
 import NavBar from "../components/Navbar/Nav.Bar";
 import Detail from "./Detail/Detail";
 import Login from "../components/Login/Login";
@@ -11,7 +10,6 @@ import ModifyUser from "../components/ModifyUser/ModifyUser";
 
 export {
   Home,
-  Form,
   NavBar,
   Detail,
   Login,

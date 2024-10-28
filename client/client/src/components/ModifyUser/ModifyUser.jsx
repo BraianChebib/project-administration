@@ -141,10 +141,11 @@ const Detail = () => {
         </form>
       </div>
       <div className="buttonModifyUser">
-        {/* Botón para eliminar usuario */}
-        <button onClick={deleteHandler} className="deleteUser">
-          Delete User
-        </button>
+        {!user.admin && (
+          <button onClick={deleteHandler} className="deleteUser">
+            Delete User
+          </button>
+        )}
         {/* Botón para volver */}
         <button onClick={onClickBackHandler} className="backButton">
           Back

@@ -6,12 +6,7 @@ const cors = require("cors");
 const app = express();
 
 // Middleware para habilitar CORS
-app.use(
-  cors({
-    origin: "https://project-administration.vercel.app", // Aquí el dominio de tu frontend
-    credentials: true,
-  })
-); // Permite solicitudes de diferentes orígenes
+app.use(cors()); // Permite solicitudes de diferentes orígenes
 
 // Middleware para registrar las solicitudes HTTP en la consola
 app.use(morgan("dev")); // Registra información de las solicitudes en formato 'dev'

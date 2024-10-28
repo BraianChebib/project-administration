@@ -16,24 +16,28 @@ const UserProfile = () => {
   const [posts, setPosts] = useState([]); // Estado para almacenar los posts del usuario
   const [isAdmin, setIsAdmin] = useState(false); // Estado para verificar si el usuario es admin
 
-  // Redirigir al login si no está autenticado
   useEffect(() => {
     if (!authenticated) {
-      navigate("/login"); // Redirige a la página de login si no está autenticado
-    } else if (profile && profile.id) {
-      dispatch(refreshProfileUser(profile.id)); // Llama a la acción para refrescar el perfil del usuario
-      // Verificar si el usuario es admin
-      if (profile.admin) {
-        setIsAdmin(true); // Marca al usuario como admin
-        // Obtener todos los posts si es admin
-        axios.get(`${API_URL_APP}/postUser`).then((response) => {
-          setPosts(response.data); // Guarda todos los posts en el estado
-        });
-      } else {
-        setPosts(profile.Posts); // Muestra solo los posts del usuario si no es admin
-      }
+      navigate("/login");
     }
-  }, [authenticated, navigate, profile, dispatch]);
+  }, [authenticated, navigate]);
+
+  useEffect(() => {
+    if (authenticated && profile?.id) {
+      dispatch(refreshProfileUser(profile.id));
+    }
+  }, [authenticated, profile?.id, dispatch]);
+
+  useEffect(() => {
+    if (profile?.admin) {
+      setIsAdmin(true);
+      axios.get(`${API_URL_APP}/postUser`).then((response) => {
+        setPosts(response.data);
+      });
+    } else {
+      setPosts(profile.Posts);
+    }
+  }, [profile]);
 
   // Maneja el clic para navegar a la página de registro
   const onClickSingInHandler = () => {

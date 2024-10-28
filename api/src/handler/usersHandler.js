@@ -6,7 +6,12 @@ const {
   createUserController,
   userProfileController,
   userProfileControllerByEmail,
+  googleAuthController,
 } = require("../controller/usersController");
+
+const { REACT_APP_GOOGLE_CLIENT_ID } = process.env;
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(REACT_APP_GOOGLE_CLIENT_ID);
 
 /**
  * Maneja la solicitud para obtener todos los usuarios o buscar un usuario por nombre.
@@ -146,6 +151,31 @@ const userProfileHandler = async (req, res) => {
   }
 };
 
+// Controlador para manejar autenticación con Google
+const googleAuth = async (req, res) => {
+  const { token } = req.body;
+
+  try {
+    // Verifica el token de Google
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: REACT_APP_GOOGLE_CLIENT_ID,
+    });
+    console.log(`soy Ticket: ${ticket}`);
+    console.log(`soy Ticket.getPayload: ${ticket.getPayload()}`);
+
+    const { name, email, picture } = ticket.getPayload();
+
+    // Busca si el usuario ya existe en la base de datos
+    let user = await googleAuthController(name, email, picture);
+
+    // Autenticación exitosa, devuelve los datos del usuario
+    res.status(200).json({ message: "Autenticado con éxito", user });
+  } catch (error) {
+    res.status(400).json({ error: "Error en la autenticación con Google" });
+  }
+};
+
 module.exports = {
   getUsersHandler,
   getUserByIdHandler,
@@ -153,4 +183,5 @@ module.exports = {
   deleteUserHandler,
   createUserHandler,
   userProfileHandler,
+  googleAuth,
 };
