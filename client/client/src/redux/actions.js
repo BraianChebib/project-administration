@@ -63,7 +63,6 @@ export const getUserProfile = (login) => {
       return true;
     } catch (error) {
       console.error(error.response?.data || error.message);
-      alert("Error: Perfil no existente, por favor ingrese nuevamente");
       return false;
     }
   };

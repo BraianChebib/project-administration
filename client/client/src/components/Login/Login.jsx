@@ -3,9 +3,10 @@ import "./Login.css";
 import { getUserProfile } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { gapi } from "gapi-script";
-import GoogleLogin from "react-google-login";
+// import { gapi } from "gapi-script";
+import { GoogleLogin } from "@react-oauth/google";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { jwtDecode } from "jwt-decode";
 
 import axios from "axios";
 const API_URL_APP = process.env.REACT_APP_API_URL || "http://localhost:3001";
@@ -42,13 +43,12 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false); // Estado para mostrar/ocultar password
 
-  useEffect(() => {
-    const start = () => {
-      gapi.auth2.init({ clientId: clientID });
-    };
-    gapi.load("client:auth2", start);
-  }, []);
-
+  // useEffect(() => {
+  //   const start = () => {
+  //     gapi.auth2.init({ clientId: clientID });
+  //   };
+  //   gapi.load("client:auth2", start);
+  // }, []);
   // Redirige al perfil de usuario si está autenticado
   useEffect(() => {
     if (autenticacion) navigate("/userProfile");
@@ -187,14 +187,16 @@ const Login = () => {
     }
   };
 
-  const onSuccess = async (response) => {
-    const { profileObj } = response;
+  const onSuccessForm = async (credentialResponse) => {
+    const profileObj = jwtDecode(credentialResponse?.credential);
+    console.log(`soy el form enviado: ${profileObj.given_Name}`);
+
     const newLoginData = {
       ...googleLogin,
-      name: profileObj.givenName || "", // Asigna el nombre
-      lastName: profileObj.familyName || "", // Asigna el apellido
+      name: profileObj.given_name || "", // Asigna el nombre
+      lastName: profileObj.family_name || "", // Asigna el apellido
       email: profileObj.email || "", // Asigna el email
-      image: profileObj.imageUrl || "", // Asigna la imagen
+      image: profileObj.picture || "", // Asigna la imagen
       nameUser: profileObj.email.split("@")[0], // Nombre de usuario a partir del email
       password: generateRandomString(12), // Genera una contraseña aleatoria
       phone: generateRandomPhoneNumber(), // Genera un número de teléfono aleatorio
@@ -229,12 +231,8 @@ const Login = () => {
     }
   };
 
-  const onFailure = (response) => {
-    console.log("Error");
-  };
-
-  const onSuccessGoogle = async (response) => {
-    const userInfo = response.profileObj; // Información del perfil de Google
+  const onSuccessGoogle = async (credentialResponse) => {
+    const userInfo = jwtDecode(credentialResponse?.credential);
 
     try {
       const authenticated = await dispatch(
@@ -325,11 +323,14 @@ const Login = () => {
           </form>
           <div className="formGoogle">
             <GoogleLogin
-              clientId={clientID}
-              onSuccess={onSuccess}
-              onFailure={onFailure}
-              cookiePolicy={"single_host_policy"}
+              onSuccess={(credentialResponse) => {
+                onSuccessForm(credentialResponse);
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
             />
+            ;
           </div>
         </div>
         <div class="form-container sign-in">
@@ -361,10 +362,12 @@ const Login = () => {
             </div>
             <button type="submit">Login</button>
             <GoogleLogin
-              clientId={clientID}
-              onSuccess={onSuccessGoogle}
-              onFailure={onFailure}
-              cookiePolicy={"single_host_policy"}
+              onSuccess={(credentialResponse) => {
+                onSuccessGoogle(credentialResponse);
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
             />
           </form>
         </div>

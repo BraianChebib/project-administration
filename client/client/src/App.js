@@ -1,5 +1,6 @@
 // App.js
 import { Routes, Route, Navigate } from "react-router-dom";
+
 import {
   Home,
   Detail,
@@ -11,7 +12,6 @@ import {
   ModifyUser,
   NavBar,
 } from "./views/index";
-
 function App() {
   return (
     <>
