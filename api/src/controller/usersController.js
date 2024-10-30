@@ -111,7 +111,8 @@ const modifyUserController = async (
   lastName,
   image,
   email,
-  phone
+  phone,
+  admin
 ) => {
   const user = await Users.findByPk(id);
   if (!user) {
@@ -122,6 +123,7 @@ const modifyUserController = async (
   user.image = image || user.image;
   user.email = email || user.email;
   user.phone = phone || user.phone;
+  user.admin = admin || user.admin;
   await user.save();
   return { message: "Usuario modificado correctamente" };
 };

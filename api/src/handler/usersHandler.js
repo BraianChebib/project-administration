@@ -81,14 +81,15 @@ const createUserHandler = async (req, res) => {
 const modifyUserHandler = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, lastName, image, email, phone } = req.body;
+    const { name, lastName, image, email, phone, admin } = req.body;
     const modifiedUser = await modifyUserController(
       id,
       name,
       lastName,
       image,
       email,
-      phone
+      phone,
+      admin
     );
     res.status(200).json(modifiedUser);
   } catch (error) {
