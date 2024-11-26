@@ -11,7 +11,7 @@ import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 const API_URL_APP = process.env.REACT_APP_API_URL || "http://localhost:3001";
 const clientID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-const CLOUDINARY = process.env.URL_CLOUDINARY;
+const CLOUDINARY = process.env.REACT_APP_URL_CLOUDINARY;
 
 const Login = () => {
   const dispatch = useDispatch(); // Inicializa el dispatch para acciones de Redux
