@@ -183,7 +183,7 @@ const Login = () => {
         navigate("/userProfile"); // Redirige al perfil de usuario
       }
     } catch (error) {
-      alert(error);
+      alert(error.message);
     }
   };
 

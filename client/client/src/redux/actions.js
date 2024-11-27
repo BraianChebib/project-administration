@@ -46,7 +46,7 @@ export const refreshProfileUser = (userId) => async (dispatch) => {
       payload: response.data,
     });
   } catch (error) {
-    console.error("Error al obtener el perfil del usuario:", error);
+    alert("Error al obtener el perfil del usuario");
   }
 };
 
@@ -62,7 +62,7 @@ export const getUserProfile = (login) => {
       dispatch({ type: GET_USER_PROFILE, payload: userProfile });
       return true;
     } catch (error) {
-      console.error(error.response?.data || error.message);
+      alert("datos ingresados incorrectos, por favor intente de nuevo");
       return false;
     }
   };
